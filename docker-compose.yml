@@ -1,0 +1,48 @@
+version: '2'
+
+services:
+  kafka:
+    image: ches/kafka
+    ports:
+      - 9092
+    environment:
+      ZOOKEEPER_CONNECTION_STRING: zookeeper
+    networks:
+      zookeeper:
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+      - zookeeper3
+  zookeeper1:
+    image: jplock/zookeeper
+    volumes:
+      - ./zookeeper.conf:/opt/zookeeper/conf/zoo.cfg
+      - ./zookeeper1.myid:/tmp/zookeeper/myid
+    networks:
+      zookeeper:
+        aliases:
+          - zookeeper
+          - zookeeper1
+  zookeeper2:
+    image: jplock/zookeeper
+    volumes:
+      - ./zookeeper.conf:/opt/zookeeper/conf/zoo.cfg
+      - ./zookeeper2.myid:/tmp/zookeeper/myid
+    networks:
+      zookeeper:
+        aliases:
+          - zookeeper
+          - zookeeper2
+  zookeeper3:
+    image: jplock/zookeeper
+    volumes:
+      - ./zookeeper.conf:/opt/zookeeper/conf/zoo.cfg
+      - ./zookeeper3.myid:/tmp/zookeeper/myid
+    networks:
+      zookeeper:
+        aliases:
+          - zookeeper
+          - zookeeper3
+
+networks:
+  zookeeper:
